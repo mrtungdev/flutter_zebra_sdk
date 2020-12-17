@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter_zebra_sdk/flutter_zebra_sdk.dart';
 
 void main() {
@@ -14,32 +13,60 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    initial();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await FlutterZebraSdk.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
+  void initial() async {
+    // await Permission.
+  }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+  Future<void> onTestTCP() async {
+    String data;
+    data = '''
+    ''
+    ^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR6,6~SD15^JUS^LRN^CI0^XZ
+    ^XA
+    ^MMT
+    ^PW500
+    ^LL0240
+    ^LS0
+    ^FT144,33^A0N,25,24^FB111,1,0,C^FH\^FDITEM TITLE^FS
+    ^FT3,61^A@N,20,20,TT0003M_^FB394,1,0,C^FH\^CI17^F8^FDOption 1, Option 2, Option 3, Option 4, Opt^FS^CI0
+    ^FT3,84^A@N,20,20,TT0003M_^FB394,1,0,C^FH\^CI17^F8^FDion 5, Option 6 ^FS^CI0
+    ^FT34,138^A@N,25,24,TT0003M_^FB331,1,0,C^FH\^CI17^F8^FDOrder: https://eat.chat/phobac^FS^CI0
+    ^FT29,173^A@N,20,20,TT0003M_^FB342,1,0,C^FH\^CI17^F8^FDPromotional Promotional Promotional^FS^CI0
+    ^FT29,193^A@N,20,20,TT0003M_^FB342,1,0,C^FH\^CI17^F8^FD Promotional Promotional ^FS^CI0
+    ^FT106,233^A0N,25,24^FB188,1,0,C^FH\^FDPHO BAC HOA VIET^FS
+    ^PQ1,0,1,Y^XZ
+        ''';
+    final rep = ZebraSdk.printZPLOverTCPIP('192.168.1.26', data: data);
+    print(rep);
+  }
 
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+  Future<void> onTestBluetooth() async {
+    String data;
+    data = '''
+    ''
+    ^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR6,6~SD15^JUS^LRN^CI0^XZ
+    ^XA
+    ^MMT
+    ^PW500
+    ^LL0240
+    ^LS0
+    ^FT144,33^A0N,25,24^FB111,1,0,C^FH\^FDITEM TITLE^FS
+    ^FT3,61^A@N,20,20,TT0003M_^FB394,1,0,C^FH\^CI17^F8^FDOption 1, Option 2, Option 3, Option 4, Opt^FS^CI0
+    ^FT3,84^A@N,20,20,TT0003M_^FB394,1,0,C^FH\^CI17^F8^FDion 5, Option 6 ^FS^CI0
+    ^FT34,138^A@N,25,24,TT0003M_^FB331,1,0,C^FH\^CI17^F8^FDOrder: https://eat.chat/phobac^FS^CI0
+    ^FT29,173^A@N,20,20,TT0003M_^FB342,1,0,C^FH\^CI17^F8^FDPromotional Promotional Promotional^FS^CI0
+    ^FT29,193^A@N,20,20,TT0003M_^FB342,1,0,C^FH\^CI17^F8^FD Promotional Promotional ^FS^CI0
+    ^FT106,233^A0N,25,24^FB188,1,0,C^FH\^FDPHO BAC HOA VIET^FS
+    ^PQ1,0,1,Y^XZ
+        ''';
+    final rep = ZebraSdk.printZPLOverBluetooth('00:07:4d:75:15:f0', data: data);
+    print(rep);
   }
 
   @override
@@ -49,8 +76,17 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: Column(
+              children: [
+                FlatButton(onPressed: onTestTCP, child: Text('Print TCP')),
+                FlatButton(
+                    onPressed: onTestBluetooth, child: Text('Print Bluetooth')),
+              ],
+            ),
+          ),
         ),
       ),
     );

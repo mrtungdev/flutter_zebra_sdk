@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fa6519bf-01df-413c-8c28-d7d041c67682" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/android/libs/ZSDK_ANDROID_BTLE.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/example_lib_main_dart.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/tlt/flutter_zebra_sdk/FlutterZebraSdkPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/tlt/flutter_zebra_sdk/FlutterZebraSdkPlugin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcworkspace/contents.xcworkspacedata" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcworkspace/contents.xcworkspacedata" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/flutter_zebra_sdk.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/ios/flutter_zebra_sdk.podspec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/flutter_zebra_sdk.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_zebra_sdk.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/flutter_zebra_sdk_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/flutter_zebra_sdk_test.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1lioWsrv2dp4RN5fFiVRnTqZpib" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/example/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fa6519bf-01df-413c-8c28-d7d041c67682" name="Default Changelist" comment="" />
+      <created>1608089307608</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1608089307608</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="111" y="57" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1608089430594">
+      <screen x="42" y="23" width="1324" height="745" />
+    </state>
+    <state x="111" y="57" key="#com.intellij.execution.impl.EditConfigurationsDialog/42.23.1324.745@42.23.1324.745" timestamp="1608089430594" />
+    <state width="1204" height="286" key="GridCell.Tab.0.bottom" timestamp="1608100449131">
+      <screen x="45" y="23" width="1321" height="745" />
+    </state>
+    <state width="1204" height="324" key="GridCell.Tab.0.bottom/42.23.1324.745@42.23.1324.745" timestamp="1608094125886" />
+    <state width="602" height="375" key="GridCell.Tab.0.bottom/43.23.1323.745@43.23.1323.745" timestamp="1608099566596" />
+    <state width="1204" height="286" key="GridCell.Tab.0.bottom/45.23.1321.745@45.23.1321.745" timestamp="1608100449131" />
+    <state width="602" height="375" key="GridCell.Tab.0.bottom/47.23.1319.745@47.23.1319.745" timestamp="1608099840241" />
+    <state width="1204" height="286" key="GridCell.Tab.0.center" timestamp="1608100449131">
+      <screen x="45" y="23" width="1321" height="745" />
+    </state>
+    <state width="1204" height="324" key="GridCell.Tab.0.center/42.23.1324.745@42.23.1324.745" timestamp="1608094125885" />
+    <state width="602" height="375" key="GridCell.Tab.0.center/43.23.1323.745@43.23.1323.745" timestamp="1608099566595" />
+    <state width="1204" height="286" key="GridCell.Tab.0.center/45.23.1321.745@45.23.1321.745" timestamp="1608100449131" />
+    <state width="602" height="375" key="GridCell.Tab.0.center/47.23.1319.745@47.23.1319.745" timestamp="1608099840240" />
+    <state width="1204" height="286" key="GridCell.Tab.0.left" timestamp="1608100449130">
+      <screen x="45" y="23" width="1321" height="745" />
+    </state>
+    <state width="1204" height="324" key="GridCell.Tab.0.left/42.23.1324.745@42.23.1324.745" timestamp="1608094125883" />
+    <state width="602" height="375" key="GridCell.Tab.0.left/43.23.1323.745@43.23.1323.745" timestamp="1608099566595" />
+    <state width="1204" height="286" key="GridCell.Tab.0.left/45.23.1321.745@45.23.1321.745" timestamp="1608100449130" />
+    <state width="602" height="375" key="GridCell.Tab.0.left/47.23.1319.745@47.23.1319.745" timestamp="1608099840238" />
+    <state width="1204" height="286" key="GridCell.Tab.0.right" timestamp="1608100449131">
+      <screen x="45" y="23" width="1321" height="745" />
+    </state>
+    <state width="1204" height="324" key="GridCell.Tab.0.right/42.23.1324.745@42.23.1324.745" timestamp="1608094125886" />
+    <state width="602" height="375" key="GridCell.Tab.0.right/43.23.1323.745@43.23.1323.745" timestamp="1608099566595" />
+    <state width="1204" height="286" key="GridCell.Tab.0.right/45.23.1321.745@45.23.1321.745" timestamp="1608100449131" />
+    <state width="602" height="375" key="GridCell.Tab.0.right/47.23.1319.745@47.23.1319.745" timestamp="1608099840240" />
+    <state x="233" y="145" key="IDE.errors.dialog" timestamp="1608099563744">
+      <screen x="43" y="23" width="1323" height="745" />
+    </state>
+    <state x="233" y="145" key="IDE.errors.dialog/43.23.1323.745@43.23.1323.745" timestamp="1608099563744" />
+    <state x="235" y="145" key="IDE.errors.dialog/45.23.1321.745@45.23.1321.745" timestamp="1608092428861" />
+    <state x="357" y="150" width="615" height="490" key="find.popup" timestamp="1608094061515">
+      <screen x="43" y="23" width="1323" height="745" />
+    </state>
+    <state x="357" y="150" width="615" height="490" key="find.popup/43.23.1323.745@43.23.1323.745" timestamp="1608094061515" />
+  </component>
+</project>
