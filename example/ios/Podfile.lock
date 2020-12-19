@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_zebra_sdk (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_zebra_sdk (from `.symlinks/plugins/flutter_zebra_sdk/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_zebra_sdk:
+    :path: ".symlinks/plugins/flutter_zebra_sdk/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_zebra_sdk: b5829f33fdb3ffa7c3f92a8135f0d701d6c3cb87
+
+PODFILE CHECKSUM: ed037a575469c372c408b3ea9bf9c7bf002e25cd
+
+COCOAPODS: 1.10.0

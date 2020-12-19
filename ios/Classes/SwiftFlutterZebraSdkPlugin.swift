@@ -14,16 +14,14 @@ public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
     result("iOS " + UIDevice.current.systemVersion)
   }
 
-  public func sendZplOverTcp(_ call: FlutterMethodCall, result: @escaping FlutterResult, _ theIpAddress: String?) {
-
-//    weak var thePrinterConn = TcpPrinterConnection(address: theIpAddress, andWithPort: 9100) as? (ZebraPrinterConnection & NSObjectProtocol)
-//    var success = thePrinterConn?.open() ?? false
-//    let zplData = "^XA^FO20,20^A0N,25,25^FDThis is a ZPL test.^FS^XZ"
-//    var error: Error? = nil
-//    success = success && thePrinterConn?.write(zplData.data(using: .utf8), error: &error) != nil
-//    if success != true || error != nil {
-//        result("OK")
-//    }
-//    thePrinterConn?.close()
+  public func onPrZplDataOverTcp(_ call: FlutterMethodCall, result: @escaping FlutterResult, _ theIpAddress: String?) {
+        
+    let thePrinterConn = TcpPrinterConnection(address: theIpAddress, andWithPort: 9100)
+    let success = thePrinterConn?.open() ?? false
+    let zplData = "^XA^FO20,20^A0N,25,25^FDThis is a ZPL test.^FS^XZ"
+//    var errorData: Error? = nil
+    let rep = thePrinterConn?.write(zplData.data(using: .utf8), error: nil)
+    result("rep"+rep!.description+success.description)
+    thePrinterConn?.close()
   }
 }
