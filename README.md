@@ -1,15 +1,29 @@
 # flutter_zebra_sdk
 
-A new flutter plugin project.
+# WIP
 
 ## Getting Started
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+```dart
+import 'package:flutter_zebra_sdk/flutter_zebra_sdk.dart';
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Android
 
+Permissions required depending on your printer:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+<uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
+```
+
+## Work in progress
+
+- [x] Send ZPL data over TCP/IP
+- [ ] Send CPCL data over TCP/IP
+- [x] Send ZPL data over Bluetooth® without pairing
+- [ ] Send CPCL data over Bluetooth® without pairing
+
+## CHANGELOG
+
+- 0.0.1: Initial

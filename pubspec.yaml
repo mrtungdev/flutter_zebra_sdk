@@ -1,8 +1,7 @@
 name: flutter_zebra_sdk
-description: A new flutter plugin project.
+description: Zebra's Link-OS Multiplatform SDK.
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/ImTung/zebra-link-os-ios
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

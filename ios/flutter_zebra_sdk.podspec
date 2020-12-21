@@ -16,18 +16,8 @@ A new flutter plugin project.
   s.source_files = 'Classes/**/*.{swift,h,m}'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  # s.dependency 'ZebraSDK'
-  # s.static_framework = true
   s.platform = :ios, '9.0'
   s.ios.vendored_library = 'libZSDK_API.a'
-  # s.requires_arc = true
-  # s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES','VALID_ARCHS' => 'arm64 armv7' }
-  # s.user_target_xcconfig = { 'DEFINES_MODULE' => 'YES','VALID_ARCHS' => 'arm64 armv7' }
-  # s.preserve_paths = 'ZebraSDK.framework'
-  # s.xcconfig = { 'OTHER_LDFLAGS' => '-framework ZebraSDK' }
-  # s.vendored_frameworks = 'ZebraSDK.framework'
-
-  # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', :modular_headers => true}
   s.swift_version = '5.0'
 end
