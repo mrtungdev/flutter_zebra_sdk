@@ -26,4 +26,14 @@ class ZebraSdk {
     }
     return await _channel.invokeMethod('printZPLOverBluetooth', params);
   }
+
+  static Future<dynamic> onDiscovery() async {
+    final Map<String, dynamic> params = {};
+    return await _channel.invokeMethod('onDiscovery', params);
+  }
+
+  static Future<dynamic> onGetPrinterInfo(String ip) async {
+    final Map<String, dynamic> params = {"ip": ip};
+    return await _channel.invokeMethod('onGetPrinterInfo', params);
+  }
 }

@@ -23,6 +23,16 @@ class _MyAppState extends State<MyApp> {
     // await Permission.
   }
 
+  Future<void> onDiscovery() async {
+    var a = await ZebraSdk.onDiscovery();
+    print(a);
+  }
+
+  Future<void> onGetIPInfo() async {
+    var a = await ZebraSdk.onGetPrinterInfo('192.168.1.26');
+    print(a);
+  }
+
   Future<void> onTestTCP() async {
     String data;
     data = '''
@@ -81,6 +91,9 @@ class _MyAppState extends State<MyApp> {
           child: Center(
             child: Column(
               children: [
+                FlatButton(
+                    onPressed: onGetIPInfo, child: Text('onGetPrinterInfo')),
+                FlatButton(onPressed: onDiscovery, child: Text('Discovery')),
                 FlatButton(onPressed: onTestTCP, child: Text('Print TCP')),
                 FlatButton(
                     onPressed: onTestBluetooth, child: Text('Print Bluetooth')),

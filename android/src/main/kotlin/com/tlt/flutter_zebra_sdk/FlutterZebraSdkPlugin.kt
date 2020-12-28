@@ -8,6 +8,7 @@ import com.zebra.sdk.comm.BluetoothConnectionInsecure
 import com.zebra.sdk.comm.Connection
 import com.zebra.sdk.comm.ConnectionException
 import com.zebra.sdk.comm.TcpConnection
+import com.zebra.sdk.printer.discovery.*
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -23,7 +24,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
   // / when the Flutter Engine is detached from the Activity
   private lateinit var channel: MethodChannel
   private var logTag: String = "ZebraSDK"
-
+  var printers: MutableList<DiscoveredPrinter> = ArrayList()
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_zebra_sdk")
     channel.setMethodCallHandler(this)
@@ -38,7 +39,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null)
   }
 
-  inner class MethodRunner(call: MethodCall, result: Result) : Runnable {
+  inner class MethodRunner(call: MethodCall, result: Result) : Runnable, DiscoveryHandler {
     private val call: MethodCall = call
     private val result: Result = result
 
@@ -50,8 +51,30 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
         "printZPLOverBluetooth" -> {
           onPrintZplDataOverBluetooth(call, result)
         }
+        "onDiscovery" -> {
+          onDiscovery(call, result)
+        }
+        "onGetPrinterInfo" -> {
+          onGetPrinterInfo(call, result)
+        }
         else -> result.notImplemented()
       }
+    }
+
+    override fun foundPrinter(p0: DiscoveredPrinter) {
+      Log.d(logTag, "foundPrinter $p0")
+      printers.add(p0)
+    }
+
+    override fun discoveryFinished() {
+      Log.d(logTag, "discoveryFinished $printers")
+      var res = { printers }
+      result.success(res)
+    }
+
+    override fun discoveryError(p0: String?) {
+      Log.d(logTag, "discoveryError $p0")
+      result.error("discoveryError", "discoveryError", p0)
     }
   }
 
@@ -73,12 +96,24 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
     }
   }
 
+  private fun createTcpConnect(ip: String, port: Int): TcpConnection {
+    return TcpConnection(ip, port)
+  }
+
   private fun onPrintZPLOverTCPIP(@NonNull call: MethodCall, @NonNull result: Result) {
-    var ipAddress: String? = call.argument("ip")
+    var ipE: String? = call.argument("ip")
     var data: String? = call.argument("data")
-    val conn: Connection = TcpConnection(ipAddress, TcpConnection.DEFAULT_ZPL_TCP_PORT)
+    var rep = HashMap<String, Any>()
+    var ipAddress: String = ""
+    if(ipE != null){
+      ipAddress = ipE
+    } else {
+      result.error("PrintZPLOverTCPIP", "IP Address is required", "Data Content")
+      return
+    }
+    val conn: Connection = createTcpConnect(ipAddress, TcpConnection.DEFAULT_ZPL_TCP_PORT)
     Log.d(logTag, "onPrintZPLOverTCPIP $ipAddress $data ${TcpConnection.DEFAULT_ZPL_TCP_PORT}")
-    if(data == null){
+    if (data == null) {
       result.error("PrintZPLOverTCPIP", "Data is required", "Data Content")
     }
     try {
@@ -86,7 +121,9 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       conn.open()
       // Send the data to printer as a byte array.
       conn.write(data?.toByteArray())
-      result.success("Success onPrintZPLOverTCPIP")
+      rep["success"] = true
+      rep["message"] = "Successfully!"
+      result.success(rep)
     } catch (e: ConnectionException) {
       // Handle communications error here.
       e.printStackTrace()
@@ -97,11 +134,11 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
     }
   }
 
-  private fun onPrintZplDataOverBluetooth(@NonNull call: MethodCall, @NonNull result: Result){
+  private fun onPrintZplDataOverBluetooth(@NonNull call: MethodCall, @NonNull result: Result) {
     var macAddress: String? = call.argument("mac")
     var data: String? = call.argument("data")
     Log.d(logTag, "onPrintZplDataOverBluetooth $macAddress $data")
-    if(data == null){
+    if (data == null) {
       result.error("onPrintZplDataOverBluetooth", "Data is required", "Data Content")
     }
     try {
@@ -128,5 +165,70 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       e.printStackTrace()
       result.error("Error", "onPrintZplDataOverBluetooth", e)
     }
+
   }
+
+  private fun onGetPrinterInfo(@NonNull call: MethodCall, @NonNull result: Result) {
+    var ipE: String? = call.argument("ip")
+    var ipAddress: String = ""
+    var rep = HashMap<String, Any>()
+    if(ipE != null){
+      ipAddress = ipE
+    } else {
+      result.error("PrintZPLOverTCPIP", "IP Address is required", "Data Content")
+      return
+    }
+    val conn: Connection = createTcpConnect(ipAddress, TcpConnection.DEFAULT_ZPL_TCP_PORT)
+    try {
+      // Open the connection - physical connection is established here.
+      conn.open()
+      // Send the data to printer as a byte array.
+      val discoveryData = DiscoveryUtil.getDiscoveryDataMap(conn)
+      Log.d(logTag, "onGetIPInfo $discoveryData")
+      rep["success"] = true
+      rep["message"] = "Successfully!"
+      rep["content"] = discoveryData
+      result.success(rep)
+
+
+    } catch (e: ConnectionException) {
+      // Handle communications error here.
+      e.printStackTrace()
+      result.error("Error", "onPrintZPLOverTCPIP", e)
+    } finally {
+      // Close the connection to release resources.
+      conn.close()
+    }
+  }
+
+  private fun onDiscovery(@NonNull call: MethodCall, @NonNull result: Result) {
+    var handleNet = object : DiscoveryHandler {
+
+      override fun foundPrinter(p0: DiscoveredPrinter) {
+        Log.d(logTag, "foundPrinter $p0")
+        printers.add(p0)
+      }
+
+      override fun discoveryFinished() {
+        Log.d(logTag, "discoveryFinished $printers")
+//        var res = { printers }
+        result.success("Success")
+      }
+
+      override fun discoveryError(p0: String?) {
+        Log.d(logTag, "discoveryError $p0")
+        result.error("discoveryError", "discoveryError", p0)
+      }
+    }
+    try {
+      NetworkDiscoverer.findPrinters(handleNet)
+    } catch (e: Exception) {
+      e.printStackTrace()
+      result.error("Error", "onDiscovery", e)
+    }
+     var net =  DiscoveredPrinterNetwork("a", 1)
+
+  }
+
+
 }
