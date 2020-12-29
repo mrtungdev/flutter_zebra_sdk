@@ -1,4 +1,4 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> onDiscovery() async {
     var a = await ZebraSdk.onDiscovery();
     print(a);
-    var b = json.decode(a);
-    print(b);
+    // var b = json.decode(a);
+    // print(b);
   }
 
   Future<void> onGetIPInfo() async {
