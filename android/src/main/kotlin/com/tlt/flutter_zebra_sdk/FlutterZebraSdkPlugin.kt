@@ -14,6 +14,57 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import com.google.gson.Gson
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+//import kotlinx.serialization.internal.*
+
+
+interface JSONConvertable {
+  fun toJSON(): String = Gson().toJson(this)
+}
+
+inline fun <reified T: JSONConvertable> String.toObject(): T = Gson().fromJson(this, T::class.java)
+
+data class ZebreResult(
+  var type: String? = null,
+  var success: Boolean? = null,
+  var message: String? = null,
+  var content: Any? = null
+  ) : JSONConvertable
+
+@Serializable
+data class ZebraPrinterInfo (
+    @SerialName("ADDRESS")
+    var address: String? = null,
+
+    @SerialName("PRODUCT_NAME")
+    var productName: String? = null,
+
+    @SerialName("SERIAL_NUMBER")
+    var serialNumber: String? = null,
+
+    @SerialName("AVAILABLE_INTERFACES")
+    var availableInterfaces: Any? = null,
+
+    @SerialName("DARKNESS")
+    var darkness: String? = null,
+
+    @SerialName("AVAILABLE_LANGUAGES")
+    var availableLanguages: Any? = null,
+
+    @SerialName("LINK_OS_MAJOR_VER")
+    val linkOSMajorVer: Long? = null,
+
+    @SerialName("FIRMWARE_VER")
+    val firmwareVer: String? = null,
+
+    @SerialName("JSON_PORT_NUMBER")
+    var jsonPortNumber: String? = null,
+
+    @SerialName("PRIMARY_LANGUAGE")
+    val primaryLanguage: String? = null
+): JSONConvertable
 
 
 /** FlutterZebraSdkPlugin */
@@ -24,7 +75,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
   // / when the Flutter Engine is detached from the Activity
   private lateinit var channel: MethodChannel
   private var logTag: String = "ZebraSDK"
-  var printers: MutableList<DiscoveredPrinter> = ArrayList()
+  var printers: MutableList<Any> = ArrayList()
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_zebra_sdk")
     channel.setMethodCallHandler(this)
@@ -39,7 +90,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null)
   }
 
-  inner class MethodRunner(call: MethodCall, result: Result) : Runnable, DiscoveryHandler {
+  inner class MethodRunner(call: MethodCall, result: Result) : Runnable {
     private val call: MethodCall = call
     private val result: Result = result
 
@@ -59,22 +110,6 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
         }
         else -> result.notImplemented()
       }
-    }
-
-    override fun foundPrinter(p0: DiscoveredPrinter) {
-      Log.d(logTag, "foundPrinter $p0")
-      printers.add(p0)
-    }
-
-    override fun discoveryFinished() {
-      Log.d(logTag, "discoveryFinished $printers")
-      var res = { printers }
-      result.success(res)
-    }
-
-    override fun discoveryError(p0: String?) {
-      Log.d(logTag, "discoveryError $p0")
-      result.error("discoveryError", "discoveryError", p0)
     }
   }
 
@@ -123,7 +158,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       conn.write(data?.toByteArray())
       rep["success"] = true
       rep["message"] = "Successfully!"
-      result.success(rep)
+      result.success(rep.toString())
     } catch (e: ConnectionException) {
       // Handle communications error here.
       e.printStackTrace()
@@ -171,7 +206,6 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
   private fun onGetPrinterInfo(@NonNull call: MethodCall, @NonNull result: Result) {
     var ipE: String? = call.argument("ip")
     var ipAddress: String = ""
-    var rep = HashMap<String, Any>()
     if(ipE != null){
       ipAddress = ipE
     } else {
@@ -183,14 +217,21 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       // Open the connection - physical connection is established here.
       conn.open()
       // Send the data to printer as a byte array.
-      val discoveryData = DiscoveryUtil.getDiscoveryDataMap(conn)
-      Log.d(logTag, "onGetIPInfo $discoveryData")
-      rep["success"] = true
-      rep["message"] = "Successfully!"
-      rep["content"] = discoveryData
-      result.success(rep)
-
-
+      val dataMap = DiscoveryUtil.getDiscoveryDataMap(conn)
+      Log.d(logTag, "onGetIPInfo $dataMap")
+      var resp = ZebreResult()
+      resp.success = true;
+      resp.message= "Successfully!"
+      var printer: ZebraPrinterInfo = ZebraPrinterInfo();
+      printer.serialNumber = dataMap["SERIAL_NUMBER"];
+      printer.address = dataMap["ADDRESS"];
+      printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"];
+      printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"];
+      printer.darkness = dataMap["DARKNESS"];
+      printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"];
+      printer.productName = dataMap["PRODUCT_NAME"];
+      resp.content = printer
+      result.success(resp.toJSON())
     } catch (e: ConnectionException) {
       // Handle communications error here.
       e.printStackTrace()
@@ -206,13 +247,25 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
 
       override fun foundPrinter(p0: DiscoveredPrinter) {
         Log.d(logTag, "foundPrinter $p0")
-        printers.add(p0)
+        var dataMap = p0.discoveryDataMap;
+        var printer: ZebraPrinterInfo = ZebraPrinterInfo();
+        printer.serialNumber = dataMap["SERIAL_NUMBER"];
+        printer.address = dataMap["ADDRESS"];
+        printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"];
+        printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"];
+        printer.darkness = dataMap["DARKNESS"];
+        printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"];
+        printer.productName = dataMap["PRODUCT_NAME"];
+        printers.add(printer)
       }
 
       override fun discoveryFinished() {
         Log.d(logTag, "discoveryFinished $printers")
-//        var res = { printers }
-        result.success("Success")
+        var resp = ZebreResult()
+        resp.success = true;
+        resp.message= "Successfully!"
+        resp.content = printers
+        result.success(resp.toJSON())
       }
 
       override fun discoveryError(p0: String?) {
