@@ -28,6 +28,12 @@ class _MyAppState extends State<MyApp> {
     var a = await ZebraSdk.onDiscovery();
     print(a);
     var b = json.decode(a);
+
+    var printers = b['content'];
+    if (printers != null) {
+      var printObj = json.decode(printers);
+      print(printObj);
+    }
     print(b);
   }
 
