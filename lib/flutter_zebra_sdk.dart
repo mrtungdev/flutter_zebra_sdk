@@ -32,8 +32,19 @@ class ZebraSdk {
     return await _channel.invokeMethod('onDiscovery', params);
   }
 
-  static Future<dynamic> onGetPrinterInfo(String ip) async {
+  static Future<dynamic> onGetPrinterInfo(String ip, {int port}) async {
     final Map<String, dynamic> params = {"ip": ip};
+    if (port != null) {
+      params['port'] = port;
+    }
     return await _channel.invokeMethod('onGetPrinterInfo', params);
+  }
+
+  static Future<dynamic> isPrinterConnected(String ip, {int port}) async {
+    final Map<String, dynamic> params = {"ip": ip};
+    if (port != null) {
+      params['port'] = port;
+    }
+    return await _channel.invokeMethod('isPrinterConnected', params);
   }
 }

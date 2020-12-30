@@ -108,6 +108,9 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
         "onGetPrinterInfo" -> {
           onGetPrinterInfo(call, result)
         }
+        "isPrinterConnected" -> {
+          isPrinterConnected(call, result)
+        }
         else -> result.notImplemented()
       }
     }
@@ -118,15 +121,15 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
     private val methodResult: Result = methodResult
     private val handler: Handler = Handler(Looper.getMainLooper())
 
-    public override fun success(result: Any?) {
+    override fun success(result: Any?) {
       handler.post { methodResult.success(result) }
     }
 
-    public override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
+    override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
       handler.post { methodResult.error(errorCode, errorMessage, errorDetails) }
     }
 
-    public override fun notImplemented() {
+    override fun notImplemented() {
       handler.post { methodResult.notImplemented() }
     }
   }
@@ -205,14 +208,19 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
 
   private fun onGetPrinterInfo(@NonNull call: MethodCall, @NonNull result: Result) {
     var ipE: String? = call.argument("ip")
+    var ipPort: Int? = call.argument("port")
     var ipAddress: String = ""
+    var port: Int = TcpConnection.DEFAULT_ZPL_TCP_PORT
     if(ipE != null){
       ipAddress = ipE
     } else {
       result.error("PrintZPLOverTCPIP", "IP Address is required", "Data Content")
       return
     }
-    val conn: Connection = createTcpConnect(ipAddress, TcpConnection.DEFAULT_ZPL_TCP_PORT)
+    if(ipPort != null){
+      port = ipPort
+    }
+    val conn: Connection = createTcpConnect(ipAddress, port)
     try {
       // Open the connection - physical connection is established here.
       conn.open()
@@ -220,17 +228,56 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       val dataMap = DiscoveryUtil.getDiscoveryDataMap(conn)
       Log.d(logTag, "onGetIPInfo $dataMap")
       var resp = ZebreResult()
-      resp.success = true;
+      resp.success = true
       resp.message= "Successfully!"
-      var printer: ZebraPrinterInfo = ZebraPrinterInfo();
-      printer.serialNumber = dataMap["SERIAL_NUMBER"];
-      printer.address = dataMap["ADDRESS"];
-      printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"];
-      printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"];
-      printer.darkness = dataMap["DARKNESS"];
-      printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"];
-      printer.productName = dataMap["PRODUCT_NAME"];
+      var printer: ZebraPrinterInfo = ZebraPrinterInfo()
+      printer.serialNumber = dataMap["SERIAL_NUMBER"]
+      printer.address = dataMap["ADDRESS"]
+      printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"]
+      printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"]
+      printer.darkness = dataMap["DARKNESS"]
+      printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"]
+      printer.productName = dataMap["PRODUCT_NAME"]
       resp.content = printer
+      result.success(resp.toJSON())
+    } catch (e: ConnectionException) {
+      // Handle communications error here.
+      e.printStackTrace()
+      result.error("Error", "onPrintZPLOverTCPIP", e)
+    } finally {
+      // Close the connection to release resources.
+      conn.close()
+    }
+  }
+
+  private fun isPrinterConnected(@NonNull call: MethodCall, @NonNull result: Result) {
+    var ipE: String? = call.argument("ip")
+    var ipPort: Int? = call.argument("port")
+    var ipAddress: String = ""
+    var port: Int = TcpConnection.DEFAULT_ZPL_TCP_PORT
+    if(ipE != null){
+      ipAddress = ipE
+    } else {
+      result.error("isPrinterConnected", "IP Address is required", "Data Content")
+      return
+    }
+    if(ipPort != null){
+      port = ipPort
+    }
+    val conn: Connection = createTcpConnect(ipAddress, port)
+    try {
+      // Open the connection - physical connection is established here.
+      conn.open()
+      // Send the data to printer as a byte array.
+      val dataMap = DiscoveryUtil.getDiscoveryDataMap(conn)
+      Log.d(logTag, "onGetIPInfo $dataMap")
+      var resp = ZebreResult()
+      var isConnected: Boolean = conn.isConnected
+      resp.success = isConnected
+      resp.message =  "Unconnected"
+      if(isConnected){
+        resp.message =  "Connected"
+      }
       result.success(resp.toJSON())
     } catch (e: ConnectionException) {
       // Handle communications error here.
@@ -247,24 +294,25 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
 
       override fun foundPrinter(p0: DiscoveredPrinter) {
         Log.d(logTag, "foundPrinter $p0")
-        var dataMap = p0.discoveryDataMap;
-        var printer: ZebraPrinterInfo = ZebraPrinterInfo();
-        printer.serialNumber = dataMap["SERIAL_NUMBER"];
-        printer.address = dataMap["ADDRESS"];
-        printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"];
-        printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"];
-        printer.darkness = dataMap["DARKNESS"];
-        printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"];
-        printer.productName = dataMap["PRODUCT_NAME"];
+        var dataMap = p0.discoveryDataMap
+        var printer: ZebraPrinterInfo = ZebraPrinterInfo()
+        printer.serialNumber = dataMap["SERIAL_NUMBER"]
+        printer.address = dataMap["ADDRESS"]
+        printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"]
+        printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"]
+        printer.darkness = dataMap["DARKNESS"]
+        printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"]
+        printer.productName = dataMap["PRODUCT_NAME"]
         printers.add(printer)
       }
 
       override fun discoveryFinished() {
         Log.d(logTag, "discoveryFinished $printers")
         var resp = ZebreResult()
-        resp.success = true;
+        resp.success = true
         resp.message= "Successfully!"
-        resp.content = printers
+        var printersJSON = Gson().toJson(printers)
+        resp.content = printersJSON
         result.success(resp.toJSON())
       }
 

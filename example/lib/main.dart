@@ -1,5 +1,4 @@
-// import 'dart:convert';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:async';
 // import 'package:flutter/services.dart';
@@ -28,13 +27,20 @@ class _MyAppState extends State<MyApp> {
   Future<void> onDiscovery() async {
     var a = await ZebraSdk.onDiscovery();
     print(a);
-    // var b = json.decode(a);
-    // print(b);
+    var b = json.decode(a);
+    print(b);
   }
 
   Future<void> onGetIPInfo() async {
     var a = await ZebraSdk.onGetPrinterInfo('192.168.1.26');
     print(a);
+  }
+
+  Future<void> onTestConnect() async {
+    var a = await ZebraSdk.isPrinterConnected('192.168.1.26');
+    print(a);
+    var b = json.decode(a);
+    print(b);
   }
 
   Future<void> onTestTCP() async {
@@ -97,6 +103,8 @@ class _MyAppState extends State<MyApp> {
               children: [
                 FlatButton(
                     onPressed: onGetIPInfo, child: Text('onGetPrinterInfo')),
+                FlatButton(
+                    onPressed: onTestConnect, child: Text('onTestConnect')),
                 FlatButton(onPressed: onDiscovery, child: Text('Discovery')),
                 FlatButton(onPressed: onTestTCP, child: Text('Print TCP')),
                 FlatButton(
