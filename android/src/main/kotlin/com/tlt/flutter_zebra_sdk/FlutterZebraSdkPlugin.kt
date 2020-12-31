@@ -15,8 +15,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import com.google.gson.Gson
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
+// import kotlinx.serialization.*
+// import kotlinx.serialization.json.*
 //import kotlinx.serialization.internal.*
 
 
@@ -33,36 +33,16 @@ data class ZebreResult(
   var content: Any? = null
   ) : JSONConvertable
 
-@Serializable
-data class ZebraPrinterInfo (
-    @SerialName("ADDRESS")
+class ZebraPrinterInfo (
     var address: String? = null,
-
-    @SerialName("PRODUCT_NAME")
     var productName: String? = null,
-
-    @SerialName("SERIAL_NUMBER")
     var serialNumber: String? = null,
-
-    @SerialName("AVAILABLE_INTERFACES")
     var availableInterfaces: Any? = null,
-
-    @SerialName("DARKNESS")
     var darkness: String? = null,
-
-    @SerialName("AVAILABLE_LANGUAGES")
     var availableLanguages: Any? = null,
-
-    @SerialName("LINK_OS_MAJOR_VER")
     val linkOSMajorVer: Long? = null,
-
-    @SerialName("FIRMWARE_VER")
     val firmwareVer: String? = null,
-
-    @SerialName("JSON_PORT_NUMBER")
     var jsonPortNumber: String? = null,
-
-    @SerialName("PRIMARY_LANGUAGE")
     val primaryLanguage: String? = null
 ): JSONConvertable
 
@@ -182,19 +162,14 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
     try {
       // Instantiate insecure connection for given Bluetooth&reg; MAC Address.
       val conn: Connection = BluetoothConnectionInsecure(macAddress, 5000, 0)
-
       // Initialize
       Looper.prepare()
-
       // Open the connection - physical connection is established here.
       conn.open()
-
       // Send the data to printer as a byte array.
       conn.write(data?.toByteArray())
-
       // Make sure the data got to the printer before closing the connection
       Thread.sleep(500)
-
       // Close the insecure connection to release resources.
       conn.close()
       Looper.myLooper()!!.quit()
@@ -265,13 +240,13 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       port = ipPort
     }
     val conn: Connection = createTcpConnect(ipAddress, port)
+    var resp = ZebreResult()
     try {
       // Open the connection - physical connection is established here.
       conn.open()
       // Send the data to printer as a byte array.
       val dataMap = DiscoveryUtil.getDiscoveryDataMap(conn)
       Log.d(logTag, "onGetIPInfo $dataMap")
-      var resp = ZebreResult()
       var isConnected: Boolean = conn.isConnected
       resp.success = isConnected
       resp.message =  "Unconnected"
@@ -282,7 +257,10 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
     } catch (e: ConnectionException) {
       // Handle communications error here.
       e.printStackTrace()
-      result.error("Error", "onPrintZPLOverTCPIP", e)
+      resp.success = false
+      resp.message =  "Unconnected"
+      result.success(resp.toJSON())
+//      result.error("Error", "onPrintZPLOverTCPIP", e)
     } finally {
       // Close the connection to release resources.
       conn.close()
