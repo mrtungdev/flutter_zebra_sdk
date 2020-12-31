@@ -2,7 +2,7 @@
 
 - Added: Discovery list
 - Added: Get printer info
-- Added: Check network is connected?
+- Added: is Printer connected?
 
 ## 0.0.1
 

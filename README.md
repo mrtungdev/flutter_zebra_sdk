@@ -26,4 +26,10 @@ Permissions required depending on your printer:
 
 ## CHANGELOG
 
-- 0.0.1: Initial
+### 0.0.2
+
+- Added: Discovery list
+- Added: Get printer info
+- Added: is Printer connected?
+
+### 0.0.1: Initial
