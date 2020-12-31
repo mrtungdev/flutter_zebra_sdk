@@ -1,3 +1,9 @@
+## 0.0.2
+
+- Added: Discovery list
+- Added: Get printer info
+- Added: Check network is connected?
+
 ## 0.0.1
 
-* TODO: Describe initial release.
+- TODO: Describe initial release.
