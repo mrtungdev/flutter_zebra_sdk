@@ -55,7 +55,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
   // / when the Flutter Engine is detached from the Activity
   private lateinit var channel: MethodChannel
   private var logTag: String = "ZebraSDK"
-  var printers: MutableList<Any> = ArrayList()
+  var printers: MutableList<ZebraPrinterInfo> = ArrayList()
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_zebra_sdk")
     channel.setMethodCallHandler(this)
@@ -273,15 +273,19 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       override fun foundPrinter(p0: DiscoveredPrinter) {
         Log.d(logTag, "foundPrinter $p0")
         var dataMap = p0.discoveryDataMap
-        var printer: ZebraPrinterInfo = ZebraPrinterInfo()
-        printer.serialNumber = dataMap["SERIAL_NUMBER"]
-        printer.address = dataMap["ADDRESS"]
-        printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"]
-        printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"]
-        printer.darkness = dataMap["DARKNESS"]
-        printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"]
-        printer.productName = dataMap["PRODUCT_NAME"]
-        printers.add(printer)
+        var serialNumber = dataMap["SERIAL_NUMBER"]
+        var isExist = printers.any { s -> s.serialNumber == serialNumber }
+        if(!isExist){
+          var printer: ZebraPrinterInfo = ZebraPrinterInfo()
+          printer.serialNumber = serialNumber
+          printer.address = dataMap["ADDRESS"]
+          printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"]
+          printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"]
+          printer.darkness = dataMap["DARKNESS"]
+          printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"]
+          printer.productName = dataMap["PRODUCT_NAME"]
+          printers.add(printer)
+        }
       }
 
       override fun discoveryFinished() {
