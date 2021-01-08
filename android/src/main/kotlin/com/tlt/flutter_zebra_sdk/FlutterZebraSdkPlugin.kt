@@ -268,9 +268,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun onDiscovery(@NonNull call: MethodCall, @NonNull result: Result) {
-    printers = [];
     var handleNet = object : DiscoveryHandler {
-
       override fun foundPrinter(p0: DiscoveredPrinter) {
         Log.d(logTag, "foundPrinter $p0")
         var dataMap = p0.discoveryDataMap
@@ -305,6 +303,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       }
     }
     try {
+      printers = [];
       NetworkDiscoverer.findPrinters(handleNet)
     } catch (e: Exception) {
       e.printStackTrace()
