@@ -303,7 +303,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       }
     }
     try {
-      printers = [];
+      printers.clear()
       NetworkDiscoverer.findPrinters(handleNet)
     } catch (e: Exception) {
       e.printStackTrace()
