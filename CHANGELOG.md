@@ -1,3 +1,7 @@
+## 0.0.2+3
+
+- Fix duplicate on Android
+
 ## 0.0.2
 
 - Added: Discovery list
