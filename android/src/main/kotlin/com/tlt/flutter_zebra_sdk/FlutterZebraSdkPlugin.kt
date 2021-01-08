@@ -268,17 +268,18 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   private fun onDiscovery(@NonNull call: MethodCall, @NonNull result: Result) {
+    printers = [];
     var handleNet = object : DiscoveryHandler {
 
       override fun foundPrinter(p0: DiscoveredPrinter) {
         Log.d(logTag, "foundPrinter $p0")
         var dataMap = p0.discoveryDataMap
-        var serialNumber = dataMap["SERIAL_NUMBER"]
-        var isExist = printers.any { s -> s.serialNumber == serialNumber }
+        var address = dataMap["ADDRESS"]
+        var isExist = printers.any { s -> s.address == address }
         if(!isExist){
           var printer: ZebraPrinterInfo = ZebraPrinterInfo()
-          printer.serialNumber = serialNumber
-          printer.address = dataMap["ADDRESS"]
+          printer.serialNumber = dataMap["SERIAL_NUMBER"]
+          printer.address = address
           printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"]
           printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"]
           printer.darkness = dataMap["DARKNESS"]
