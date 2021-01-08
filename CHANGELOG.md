@@ -1,4 +1,4 @@
-## 0.0.2+4
+## 0.0.2+5
 
 - Fix duplicate on Android
 
