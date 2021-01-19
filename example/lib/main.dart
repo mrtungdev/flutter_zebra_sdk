@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter_zebra_sdk/flutter_zebra_sdk.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -24,8 +24,43 @@ class _MyAppState extends State<MyApp> {
     // await Permission.
   }
 
+  Future _ackAlert(BuildContext context, String title) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          // content: const Text('This item is no longer available'),
+          actions: [
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> onDiscovery() async {
     var a = await ZebraSdk.onDiscovery();
+    print(a);
+    var b = json.decode(a);
+
+    var printers = b['content'];
+    if (printers != null) {
+      var printObj = json.decode(printers);
+      print(printObj);
+    }
+
+    print(b);
+  }
+
+  Future<void> onDiscoveryUSB(dynamic context) async {
+    var a = await ZebraSdk.onDiscoveryUSB();
+    _ackAlert(context, 'USB $a');
     print(a);
     var b = json.decode(a);
 
@@ -78,7 +113,7 @@ class _MyAppState extends State<MyApp> {
     ''
     ^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR6,6~SD15^JUS^LRN^CI0^XZ
     ^XA
-    ^MMT
+    ^MMC
     ^PW500
     ^LL0240
     ^LS0
@@ -112,6 +147,9 @@ class _MyAppState extends State<MyApp> {
                 FlatButton(
                     onPressed: onTestConnect, child: Text('onTestConnect')),
                 FlatButton(onPressed: onDiscovery, child: Text('Discovery')),
+                FlatButton(
+                    onPressed: () => onDiscoveryUSB(context),
+                    child: Text('Discovery USB')),
                 FlatButton(onPressed: onTestTCP, child: Text('Print TCP')),
                 FlatButton(
                     onPressed: onTestBluetooth, child: Text('Print Bluetooth')),

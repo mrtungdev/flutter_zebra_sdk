@@ -1,20 +1,26 @@
 package com.tlt.flutter_zebra_sdk
 
+import android.app.Activity
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.annotation.NonNull
-import com.zebra.sdk.comm.BluetoothConnectionInsecure
+import com.google.gson.Gson
+import com.zebra.sdk.btleComm.BluetoothLeConnection
 import com.zebra.sdk.comm.Connection
 import com.zebra.sdk.comm.ConnectionException
 import com.zebra.sdk.comm.TcpConnection
 import com.zebra.sdk.printer.discovery.*
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import com.google.gson.Gson
+
+
 // import kotlinx.serialization.*
 // import kotlinx.serialization.json.*
 //import kotlinx.serialization.internal.*
@@ -24,41 +30,61 @@ interface JSONConvertable {
   fun toJSON(): String = Gson().toJson(this)
 }
 
-inline fun <reified T: JSONConvertable> String.toObject(): T = Gson().fromJson(this, T::class.java)
+inline fun <reified T : JSONConvertable> String.toObject(): T = Gson().fromJson(this, T::class.java)
 
 data class ZebreResult(
-  var type: String? = null,
-  var success: Boolean? = null,
-  var message: String? = null,
-  var content: Any? = null
-  ) : JSONConvertable
+        var type: String? = null,
+        var success: Boolean? = null,
+        var message: String? = null,
+        var content: Any? = null
+) : JSONConvertable
 
-class ZebraPrinterInfo (
-    var address: String? = null,
-    var productName: String? = null,
-    var serialNumber: String? = null,
-    var availableInterfaces: Any? = null,
-    var darkness: String? = null,
-    var availableLanguages: Any? = null,
-    val linkOSMajorVer: Long? = null,
-    val firmwareVer: String? = null,
-    var jsonPortNumber: String? = null,
-    val primaryLanguage: String? = null
+class ZebraPrinterInfo(
+        var address: String? = null,
+        var productName: String? = null,
+        var serialNumber: String? = null,
+        var availableInterfaces: Any? = null,
+        var darkness: String? = null,
+        var availableLanguages: Any? = null,
+        val linkOSMajorVer: Long? = null,
+        val firmwareVer: String? = null,
+        var jsonPortNumber: String? = null,
+        val primaryLanguage: String? = null
 ): JSONConvertable
 
 
 /** FlutterZebraSdkPlugin */
-class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
+class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
   // / The MethodChannel that will the communication between Flutter and native Android
   // /
   // / This local reference serves to register the plugin with the Flutter Engine and unregister it
   // / when the Flutter Engine is detached from the Activity
   private lateinit var channel: MethodChannel
   private var logTag: String = "ZebraSDK"
+  private lateinit var context: Context
+  private lateinit var activity: Activity
   var printers: MutableList<ZebraPrinterInfo> = ArrayList()
+
+  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+    activity = binding.activity;
+  }
+
+  override fun onDetachedFromActivityForConfigChanges() {
+    TODO("Not yet implemented")
+  }
+
+  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+    TODO("Not yet implemented")
+  }
+
+  override fun onDetachedFromActivity() {
+    TODO("Not yet implemented")
+  }
+
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_zebra_sdk")
     channel.setMethodCallHandler(this)
+    context = flutterPluginBinding.applicationContext
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull rawResult: Result) {
@@ -85,6 +111,10 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
         "onDiscovery" -> {
           onDiscovery(call, result)
         }
+        "onDiscoveryUSB" -> {
+          onDiscoveryUSB(call, result)
+        }
+
         "onGetPrinterInfo" -> {
           onGetPrinterInfo(call, result)
         }
@@ -159,24 +189,56 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
     if (data == null) {
       result.error("onPrintZplDataOverBluetooth", "Data is required", "Data Content")
     }
+
+    var conn: BluetoothLeConnection? = null
     try {
-      // Instantiate insecure connection for given Bluetooth&reg; MAC Address.
-      val conn: Connection = BluetoothConnectionInsecure(macAddress, 5000, 0)
-      // Initialize
-      Looper.prepare()
+      conn = BluetoothLeConnection(macAddress, context)
+
+      // Open the connection - physical connection is established here.
+
       // Open the connection - physical connection is established here.
       conn.open()
+
+      // This example prints "This is a ZPL test." near the top of the label.
+
+      // This example prints "This is a ZPL test." near the top of the label.
+      val zplData = "^XA^FO20,20^A0N,25,25^FDThis is a ZPL test.^FS^XZ"
+
       // Send the data to printer as a byte array.
-      conn.write(data?.toByteArray())
+
+      // Send the data to printer as a byte array.
+      conn.write(zplData.toByteArray())
+
+      // Make sure the data got to the printer before closing the connection
+
       // Make sure the data got to the printer before closing the connection
       Thread.sleep(500)
-      // Close the insecure connection to release resources.
-      conn.close()
-      Looper.myLooper()!!.quit()
+//
+//      // Instantiate insecure connection for given Bluetooth&reg; MAC Address.
+//      val conn: Connection = BluetoothConnectionInsecure(macAddress, 5000, 0)
+//      // Initialize
+//      Looper.prepare()
+//      // Open the connection - physical connection is established here.
+//      conn.open()
+//      // Send the data to printer as a byte array.
+//      conn.write(data?.toByteArray())
+//      // Make sure the data got to the printer before closing the connection
+//      Thread.sleep(500)
+//      // Close the insecure connection to release resources.
+//      conn.close()
+//      Looper.myLooper()!!.quit()
     } catch (e: Exception) {
       // Handle communications error here.
       e.printStackTrace()
       result.error("Error", "onPrintZplDataOverBluetooth", e)
+    } finally {
+      if (null != conn) {
+        try {
+          conn.close()
+        } catch (e: ConnectionException) {
+          e.printStackTrace()
+        }
+      }
     }
 
   }
@@ -310,6 +372,52 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler {
       result.error("Error", "onDiscovery", e)
     }
      var net =  DiscoveredPrinterNetwork("a", 1)
+
+  }
+
+
+  private fun onDiscoveryUSB(@NonNull call: MethodCall, @NonNull result: Result) {
+    var handleNet = object : DiscoveryHandler {
+      override fun foundPrinter(p0: DiscoveredPrinter) {
+        Log.d(logTag, "foundPrinter $p0")
+        var dataMap = p0.discoveryDataMap
+        var address = dataMap["ADDRESS"]
+        var isExist = printers.any { s -> s.address == address }
+        if(!isExist){
+          var printer: ZebraPrinterInfo = ZebraPrinterInfo()
+          printer.serialNumber = dataMap["SERIAL_NUMBER"]
+          printer.address = address
+          printer.availableInterfaces = dataMap["AVAILABLE_INTERFACES"]
+          printer.availableLanguages = dataMap["AVAILABLE_LANGUAGES"]
+          printer.darkness = dataMap["DARKNESS"]
+          printer.jsonPortNumber = dataMap["JSON_PORT_NUMBER"]
+          printer.productName = dataMap["PRODUCT_NAME"]
+          printers.add(printer)
+        }
+      }
+
+      override fun discoveryFinished() {
+        Log.d(logTag, "discoveryUSBFinished $printers")
+        var resp = ZebreResult()
+        resp.success = true
+        resp.message= "Successfully!"
+        var printersJSON = Gson().toJson(printers)
+        resp.content = printersJSON
+        result.success(resp.toJSON())
+      }
+
+      override fun discoveryError(p0: String?) {
+        Log.d(logTag, "discoveryUSBError $p0")
+        result.error("discoveryUSBError", "discoveryUSBError", p0)
+      }
+    }
+    try {
+      printers.clear()
+      UsbDiscoverer.findPrinters(context, handleNet)
+    } catch (e: Exception) {
+      e.printStackTrace()
+      result.error("Error", "onDiscoveryUSB", e)
+    }
 
   }
 
