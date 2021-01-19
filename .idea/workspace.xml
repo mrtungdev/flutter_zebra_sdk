@@ -2,32 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa6519bf-01df-413c-8c28-d7d041c67682" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/android/libs/ZSDK_ANDROID_BTLE.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/example_lib_main_dart.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/kotlin/com/tlt/flutter_zebra_sdk/FlutterZebraSdkPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/kotlin/com/tlt/flutter_zebra_sdk/FlutterZebraSdkPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcworkspace/contents.xcworkspacedata" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcworkspace/contents.xcworkspacedata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/flutter_zebra_sdk.podspec" beforeDir="false" afterPath="$PROJECT_DIR$/ios/flutter_zebra_sdk.podspec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/flutter_zebra_sdk.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/flutter_zebra_sdk.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/flutter_zebra_sdk_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/flutter_zebra_sdk_test.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Podfile.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,34 +53,38 @@
       <screen x="42" y="23" width="1324" height="745" />
     </state>
     <state x="111" y="57" key="#com.intellij.execution.impl.EditConfigurationsDialog/42.23.1324.745@42.23.1324.745" timestamp="1608089430594" />
-    <state width="1204" height="286" key="GridCell.Tab.0.bottom" timestamp="1608100449131">
-      <screen x="45" y="23" width="1321" height="745" />
+    <state width="1968" height="289" key="GridCell.Tab.0.bottom" timestamp="1611038556050">
+      <screen x="85" y="25" width="2475" height="1415" />
     </state>
     <state width="1204" height="324" key="GridCell.Tab.0.bottom/42.23.1324.745@42.23.1324.745" timestamp="1608094125886" />
     <state width="602" height="375" key="GridCell.Tab.0.bottom/43.23.1323.745@43.23.1323.745" timestamp="1608099566596" />
     <state width="1204" height="286" key="GridCell.Tab.0.bottom/45.23.1321.745@45.23.1321.745" timestamp="1608100449131" />
     <state width="602" height="375" key="GridCell.Tab.0.bottom/47.23.1319.745@47.23.1319.745" timestamp="1608099840241" />
-    <state width="1204" height="286" key="GridCell.Tab.0.center" timestamp="1608100449131">
-      <screen x="45" y="23" width="1321" height="745" />
+    <state width="1968" height="289" key="GridCell.Tab.0.bottom/85.25.2475.1415@85.25.2475.1415" timestamp="1611038556050" />
+    <state width="1968" height="289" key="GridCell.Tab.0.center" timestamp="1611038556050">
+      <screen x="85" y="25" width="2475" height="1415" />
     </state>
     <state width="1204" height="324" key="GridCell.Tab.0.center/42.23.1324.745@42.23.1324.745" timestamp="1608094125885" />
     <state width="602" height="375" key="GridCell.Tab.0.center/43.23.1323.745@43.23.1323.745" timestamp="1608099566595" />
     <state width="1204" height="286" key="GridCell.Tab.0.center/45.23.1321.745@45.23.1321.745" timestamp="1608100449131" />
     <state width="602" height="375" key="GridCell.Tab.0.center/47.23.1319.745@47.23.1319.745" timestamp="1608099840240" />
-    <state width="1204" height="286" key="GridCell.Tab.0.left" timestamp="1608100449130">
-      <screen x="45" y="23" width="1321" height="745" />
+    <state width="1968" height="289" key="GridCell.Tab.0.center/85.25.2475.1415@85.25.2475.1415" timestamp="1611038556050" />
+    <state width="1968" height="289" key="GridCell.Tab.0.left" timestamp="1611038556050">
+      <screen x="85" y="25" width="2475" height="1415" />
     </state>
     <state width="1204" height="324" key="GridCell.Tab.0.left/42.23.1324.745@42.23.1324.745" timestamp="1608094125883" />
     <state width="602" height="375" key="GridCell.Tab.0.left/43.23.1323.745@43.23.1323.745" timestamp="1608099566595" />
     <state width="1204" height="286" key="GridCell.Tab.0.left/45.23.1321.745@45.23.1321.745" timestamp="1608100449130" />
     <state width="602" height="375" key="GridCell.Tab.0.left/47.23.1319.745@47.23.1319.745" timestamp="1608099840238" />
-    <state width="1204" height="286" key="GridCell.Tab.0.right" timestamp="1608100449131">
-      <screen x="45" y="23" width="1321" height="745" />
+    <state width="1968" height="289" key="GridCell.Tab.0.left/85.25.2475.1415@85.25.2475.1415" timestamp="1611038556050" />
+    <state width="1968" height="289" key="GridCell.Tab.0.right" timestamp="1611038556050">
+      <screen x="85" y="25" width="2475" height="1415" />
     </state>
     <state width="1204" height="324" key="GridCell.Tab.0.right/42.23.1324.745@42.23.1324.745" timestamp="1608094125886" />
     <state width="602" height="375" key="GridCell.Tab.0.right/43.23.1323.745@43.23.1323.745" timestamp="1608099566595" />
     <state width="1204" height="286" key="GridCell.Tab.0.right/45.23.1321.745@45.23.1321.745" timestamp="1608100449131" />
     <state width="602" height="375" key="GridCell.Tab.0.right/47.23.1319.745@47.23.1319.745" timestamp="1608099840240" />
+    <state width="1968" height="289" key="GridCell.Tab.0.right/85.25.2475.1415@85.25.2475.1415" timestamp="1611038556050" />
     <state x="233" y="145" key="IDE.errors.dialog" timestamp="1608099563744">
       <screen x="43" y="23" width="1323" height="745" />
     </state>

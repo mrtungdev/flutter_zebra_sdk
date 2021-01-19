@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> onTestConnect() async {
-    var a = await ZebraSdk.isPrinterConnected('192.168.1.25');
+    var a = await ZebraSdk.isPrinterConnected('192.168.1.26');
     print(a);
     var b = json.decode(a);
     print(b);
