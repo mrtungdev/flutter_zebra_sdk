@@ -24,6 +24,7 @@
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>bluetooth-central</string>
 		<string>external-accessory</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

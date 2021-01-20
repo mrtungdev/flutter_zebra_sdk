@@ -1,7 +1,5 @@
 # flutter_zebra_sdk
 
-# WIP
-
 ## Getting Started
 
 ```dart
@@ -20,16 +18,7 @@ Permissions required depending on your printer:
 ## Work in progress
 
 - [x] Send ZPL data over TCP/IP
-- [ ] Send CPCL data over TCP/IP
 - [x] Send ZPL data over Bluetooth® without pairing
+- [ ] Send CPCL data over TCP/IP
 - [ ] Send CPCL data over Bluetooth® without pairing
 
-## CHANGELOG
-
-### 0.0.2
-
-- Added: Discovery list
-- Added: Get printer info
-- Added: is Printer connected?
-
-### 0.0.1: Initial
