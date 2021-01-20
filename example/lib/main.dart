@@ -126,7 +126,7 @@ class _MyAppState extends State<MyApp> {
     ^FT106,233^A0N,25,24^FB188,1,0,C^FH\^FDPHO BAC HOA VIET^FS
     ^PQ1,0,1,Y^XZ
         ''';
-    final rep = ZebraSdk.printZPLOverBluetooth('00:07:4d:75:15:f0', data: data);
+    final rep = ZebraSdk.printZPLOverBluetooth('50:8C:B1:8D:10:C7', data: data);
     print(rep);
   }
 
