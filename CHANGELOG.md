@@ -1,5 +1,5 @@
 ## 0.0.3
-- Added: Print over Bluetooth® Low Energy
+- Added for Android: Print over Bluetooth® Low Energy
 
 ## 0.0.2+5
 

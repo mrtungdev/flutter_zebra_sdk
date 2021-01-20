@@ -13,11 +13,14 @@ public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch (call.method) {
+        case "onDiscovery":
+            onDiscovery(call, result: result)
+            break
         case "printZPLOverTCPIP":
             onPrZplDataOverTcp(call, result: result)
             break
-        case "onDiscovery":
-            onDiscovery(call, result: result)
+        case "printZPLOverBluetooth":
+            onPrintZplDataOverBluetooth(call, result: result)
             break
         case "onGetPrinterInfo":
             onGetPrinterInfo(call, result: result)
@@ -33,6 +36,10 @@ public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
     
     public func createTCPConnection(ipAddress: String, port: Int) -> TcpPrinterConnection{
         return TcpPrinterConnection(address: ipAddress, andWithPort: port)
+    }
+    
+    public func createBluetoothConnection(macAddress: String) -> MfiBtPrinterConnection{
+        return MfiBtPrinterConnection(serialNumber: macAddress)
     }
     
     public func onPrZplDataOverTcp(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -55,6 +62,37 @@ public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
         } catch{
             debugPrint("Unexpected error: \(error).")
             result(FlutterError.init(code: "ON_PRINT_ZPL_DATA_OVER_TCP", message: error.localizedDescription, details: nil))
+        }
+    }
+    
+    public func onPrintZplDataOverBluetooth(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        var resp = ZebreResult()
+        do {
+            let arguments = call.arguments as! Dictionary<String, AnyObject>
+            var serialNumber = arguments["mac"] as! String
+            let data = arguments["data"] as! String
+            
+            let sam = EAAccessoryManager.shared()
+            let connectedAccessories = sam.connectedAccessories
+            for accessory in connectedAccessories {
+                if (accessory.protocolStrings.firstIndex(of: "com.zebra.rawport") ?? NSNotFound) != NSNotFound {
+                    serialNumber = accessory.serialNumber
+                    break
+                }
+            }
+            let conn = createBluetoothConnection(macAddress: serialNumber)
+            conn.open()
+            let rep = conn.write(data.data(using: .utf8), error: nil)
+            conn.close()
+            
+            resp.message = "Successfully!"
+            resp.success = true
+            resp.content = rep.description;
+            let respJson = try resp.jsonString()
+            result(respJson)
+        } catch{
+            debugPrint("Unexpected error: \(error).")
+            result(FlutterError.init(code: "ON_PRINT_ZPL_DATA_OVER_BLUETOOTH", message: error.localizedDescription, details: nil))
         }
     }
     
