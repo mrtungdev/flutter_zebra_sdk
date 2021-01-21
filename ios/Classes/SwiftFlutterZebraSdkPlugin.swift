@@ -38,7 +38,7 @@ public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
         return TcpPrinterConnection(address: ipAddress, andWithPort: port)
     }
     
-    public func createBluetoothConnection(macAddress: String) -> MfiBtPrinterConnection{
+    public func createBluetoothConnection(macAddress: String) -> ZebraPrinterConnection{
         return MfiBtPrinterConnection(serialNumber: macAddress)
     }
     
@@ -68,21 +68,29 @@ public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
     public func onPrintZplDataOverBluetooth(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         var resp = ZebreResult()
         do {
+            
             let arguments = call.arguments as! Dictionary<String, AnyObject>
             var serialNumber = arguments["mac"] as! String
             let data = arguments["data"] as! String
             
-            let sam = EAAccessoryManager.shared()
-            let connectedAccessories = sam.connectedAccessories
+            EAAccessoryManager.shared().registerForLocalNotifications()
+            let connectedAccessories = EAAccessoryManager.shared().connectedAccessories
             for accessory in connectedAccessories {
                 if (accessory.protocolStrings.firstIndex(of: "com.zebra.rawport") ?? NSNotFound) != NSNotFound {
                     serialNumber = accessory.serialNumber
                     break
                 }
             }
-            let conn = createBluetoothConnection(macAddress: serialNumber)
+//            let conn = createBluetoothConnection(macAddress: serialNumber)
+            guard let conn = MfiBtPrinterConnection(serialNumber: serialNumber) else {
+                return
+            }
             conn.open()
+            
+            Thread.sleep(forTimeInterval: 1.0) // this is the important one
+            
             let rep = conn.write(data.data(using: .utf8), error: nil)
+            debugPrint(rep)
             conn.close()
             
             resp.message = "Successfully!"
