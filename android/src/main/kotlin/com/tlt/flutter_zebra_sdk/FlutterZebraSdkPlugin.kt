@@ -202,7 +202,7 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       // Send the data to printer as a byte array.
 
       // Send the data to printer as a byte array.
-      conn.write(data.toByteArray())
+      conn.write(data?.toByteArray())
 
       Thread.sleep(500)
     } catch (e: Exception) {
