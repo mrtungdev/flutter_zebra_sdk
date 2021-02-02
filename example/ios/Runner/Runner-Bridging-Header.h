@@ -1,4 +1,5 @@
 #import "GeneratedPluginRegistrant.h"
+#import "ZPrinterLEService.h"
 //
 //#import "ZebraPrinterConnection.h"
 //#import "ZebraPrinter.h"

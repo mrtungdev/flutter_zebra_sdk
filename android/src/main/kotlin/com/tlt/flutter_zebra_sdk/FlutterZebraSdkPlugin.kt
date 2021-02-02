@@ -199,34 +199,12 @@ class FlutterZebraSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
       // Open the connection - physical connection is established here.
       conn.open()
 
-      // This example prints "This is a ZPL test." near the top of the label.
-
-      // This example prints "This is a ZPL test." near the top of the label.
-      val zplData = "^XA^FO20,20^A0N,25,25^FDThis is a ZPL test.^FS^XZ"
-
       // Send the data to printer as a byte array.
 
       // Send the data to printer as a byte array.
-      conn.write(zplData.toByteArray())
+      conn.write(data.toByteArray())
 
-      // Make sure the data got to the printer before closing the connection
-
-      // Make sure the data got to the printer before closing the connection
       Thread.sleep(500)
-//
-//      // Instantiate insecure connection for given Bluetooth&reg; MAC Address.
-//      val conn: Connection = BluetoothConnectionInsecure(macAddress, 5000, 0)
-//      // Initialize
-//      Looper.prepare()
-//      // Open the connection - physical connection is established here.
-//      conn.open()
-//      // Send the data to printer as a byte array.
-//      conn.write(data?.toByteArray())
-//      // Make sure the data got to the printer before closing the connection
-//      Thread.sleep(500)
-//      // Close the insecure connection to release resources.
-//      conn.close()
-//      Looper.myLooper()!!.quit()
     } catch (e: Exception) {
       // Handle communications error here.
       e.printStackTrace()

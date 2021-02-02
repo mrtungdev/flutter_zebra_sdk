@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import CoreBluetooth
 import ExternalAccessory
 
 public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
@@ -38,7 +39,7 @@ public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
         return TcpPrinterConnection(address: ipAddress, andWithPort: port)
     }
     
-    public func createBluetoothConnection(macAddress: String) -> MfiBtPrinterConnection{
+    public func createBluetoothConnection(macAddress: String) -> ZebraPrinterConnection{
         return MfiBtPrinterConnection(serialNumber: macAddress)
     }
     
@@ -68,27 +69,51 @@ public class SwiftFlutterZebraSdkPlugin: NSObject, FlutterPlugin {
     public func onPrintZplDataOverBluetooth(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         var resp = ZebreResult()
         do {
+            var selectedPrinter: CBPeripheral?
             let arguments = call.arguments as! Dictionary<String, AnyObject>
             var serialNumber = arguments["mac"] as! String
             let data = arguments["data"] as! String
-            
-            let sam = EAAccessoryManager.shared()
-            let connectedAccessories = sam.connectedAccessories
-            for accessory in connectedAccessories {
-                if (accessory.protocolStrings.firstIndex(of: "com.zebra.rawport") ?? NSNotFound) != NSNotFound {
-                    serialNumber = accessory.serialNumber
-                    break
-                }
+        
+            let printQueue = DispatchQueue(label: "com.flutter_zebra_sdk.serial_queue")
+            var connectedAccessories:[EAAccessory] = []
+            EAAccessoryManager.shared().registerForLocalNotifications()
+            debugPrint("onPrintZplDataOverBluetooth: ", serialNumber, data)
+            printQueue.sync {
+                debugPrint("Print Queue 1: Get Connected Accesories")
+                connectedAccessories = EAAccessoryManager.shared().connectedAccessories
             }
-            let conn = createBluetoothConnection(macAddress: serialNumber)
-            conn.open()
-            let rep = conn.write(data.data(using: .utf8), error: nil)
-            conn.close()
+            
+            printQueue.sync {
+                debugPrint("Print Queue 2: Enter Connected Accesories")
+                if(serialNumber != ""){
+                    selectedPrinter?.setValue(data, forKey: serialNumber)
+                }
+                for accessory in connectedAccessories {
+                    if (accessory.protocolStrings.firstIndex(of: "com.zebra.rawport") ?? NSNotFound) != NSNotFound {
+                        serialNumber = accessory.serialNumber
+                        debugPrint("Accessory",accessory)
+                        break
+                    }
+                }
+                
+                guard let conn = MfiBtPrinterConnection(serialNumber: serialNumber) else {
+                    debugPrint("Connection failed")
+                    return
+                }
+                debugPrint("Connection worked", conn)
+                conn.open()
+                let rep = conn.write(data.data(using: .utf8), error: nil)
+                
+                Thread.sleep(forTimeInterval: 1.0)
+                debugPrint("is Success",rep)
+                conn.close()
+            }
             
             resp.message = "Successfully!"
             resp.success = true
-            resp.content = rep.description;
+            resp.content = "";//rep.description;
             let respJson = try resp.jsonString()
+            debugPrint("Response", resp)
             result(respJson)
         } catch{
             debugPrint("Unexpected error: \(error).")

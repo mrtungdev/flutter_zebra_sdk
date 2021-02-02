@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:async';
 // import 'package:flutter/services.dart';
@@ -103,6 +104,7 @@ class _MyAppState extends State<MyApp> {
     ^FT106,233^A0N,25,24^FB188,1,0,C^FH\^FDPHO BAC HOA VIET^FS
     ^PQ1,0,1,Y^XZ
         ''';
+
     final rep = ZebraSdk.printZPLOverTCPIP('192.168.1.26', data: data);
     print(rep);
   }
@@ -126,7 +128,12 @@ class _MyAppState extends State<MyApp> {
     ^FT106,233^A0N,25,24^FB188,1,0,C^FH\^FDPHO BAC HOA VIET^FS
     ^PQ1,0,1,Y^XZ
         ''';
-    final rep = ZebraSdk.printZPLOverBluetooth('50:8C:B1:8D:10:C7', data: data);
+
+    String arr = '50:8C:B1:8D:10:C7';
+    if (Platform.isIOS) {
+      arr = '50J171201608';
+    }
+    final rep = ZebraSdk.printZPLOverBluetooth(arr, data: data);
     print(rep);
   }
 
