@@ -1,4 +1,4 @@
-## 0.0.3
+## 0.0.3+1
 - Added for Android: Print over Bluetooth® Low Energy
 
 ## 0.0.2+5

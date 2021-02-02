@@ -131,7 +131,7 @@ class _MyAppState extends State<MyApp> {
 
     String arr = '50:8C:B1:8D:10:C7';
     if (Platform.isIOS) {
-      arr = '6FA4151E-D68F-5AD7-A6CE-67F3C56B96AC';
+      arr = '50J171201608';
     }
     final rep = ZebraSdk.printZPLOverBluetooth(arr, data: data);
     print(rep);
