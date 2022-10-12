@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
           title: Text(title),
           // content: const Text('This item is no longer available'),
           actions: [
-            FlatButton(
+            TextButton(
               child: Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -149,16 +149,16 @@ class _MyAppState extends State<MyApp> {
           child: Center(
             child: Column(
               children: [
-                FlatButton(
+                TextButton(
                     onPressed: onGetIPInfo, child: Text('onGetPrinterInfo')),
-                FlatButton(
+                TextButton(
                     onPressed: onTestConnect, child: Text('onTestConnect')),
-                FlatButton(onPressed: onDiscovery, child: Text('Discovery')),
-                FlatButton(
+                TextButton(onPressed: onDiscovery, child: Text('Discovery')),
+                TextButton(
                     onPressed: () => onDiscoveryUSB(context),
                     child: Text('Discovery USB')),
-                FlatButton(onPressed: onTestTCP, child: Text('Print TCP')),
-                FlatButton(
+                TextButton(onPressed: onTestTCP, child: Text('Print TCP')),
+                TextButton(
                     onPressed: onTestBluetooth, child: Text('Print Bluetooth')),
               ],
             ),
