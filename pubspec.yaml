@@ -1,6 +1,6 @@
 name: flutter_zebra_sdk
 description: Zebra's Link-OS Multiplatform SDK.
-version: 0.0.4
+version: 0.0.4+1
 homepage: https://github.com/ImTung/flutter_zebra_sdk
 
 environment:
